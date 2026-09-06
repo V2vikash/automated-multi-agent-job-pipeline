@@ -1,0 +1,24 @@
+import logging
+import sys
+import time
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] [pipeline_worker] %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+logger = logging.getLogger("pipeline_worker")
+
+
+def main():
+    logger.info("pipeline_worker started")
+    # Placeholder loop for future LangGraph pipeline orchestrator worker execution in Phase 6
+    try:
+        while True:
+            time.sleep(60)
+    except KeyboardInterrupt:
+        logger.info("pipeline_worker shutting down")
+
+
+if __name__ == "__main__":
+    main()
