@@ -40,6 +40,22 @@ class Settings(BaseSettings):
         description="Redis Connection URL"
     )
 
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def validate_database_url(cls, v: Union[str, None]) -> str:
+        if isinstance(v, str):
+            if v.startswith("postgres://"):
+                return v.replace("postgres://", "postgresql+asyncpg://", 1)
+            elif v.startswith("postgresql://"):
+                return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+            elif v.startswith("postgres+asyncpg://"):
+                return v.replace("postgres+asyncpg://", "postgresql+asyncpg://", 1)
+            elif v.startswith("postgresql+psycopg2://"):
+                return v.replace("postgresql+psycopg2://", "postgresql+asyncpg://", 1)
+            elif v.startswith("postgresql+psycopg://"):
+                return v.replace("postgresql+psycopg://", "postgresql+asyncpg://", 1)
+        return v
+
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
     def parse_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
