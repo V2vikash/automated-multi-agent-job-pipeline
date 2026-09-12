@@ -1,0 +1,13 @@
+services:
+  - type: static
+    name: automated-multi-agent-job-pipeline-frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    rootDir: frontend
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://automated-multi-agent-job-pipeline.onrender.com
