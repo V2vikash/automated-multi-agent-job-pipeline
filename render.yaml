@@ -1,9 +1,10 @@
 services:
-  - type: static
+  - type: web
     name: automated-multi-agent-job-pipeline-frontend
-    buildCommand: npm install && npm run build
-    publishDir: dist
+    runtime: static
     rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
     routes:
       - type: rewrite
         source: /*
