@@ -18,12 +18,16 @@ EventHandler = Callable[[EventEnvelope], Awaitable[None]]
 class KafkaConsumerManager:
     """Consumer abstraction for handling incoming Kafka topic events."""
 
-    def __init__(self, group_id: str = "multi-agent-job-pipeline-consumer-group"):
+    def __init__(self, group_id: str = "multi-agent-job-pipeline-consumer-group", bootstrap_servers: Optional[str] = None):
         self.group_id = group_id
-        self.bootstrap_servers = settings.KAFKA_BOOTSTRAP_SERVERS
+        self._bootstrap_servers = bootstrap_servers
         self._consumer: Optional[AIOKafkaConsumer] = None
         self._handlers: Dict[str, List[EventHandler]] = {}
         self._running = False
+
+    @property
+    def bootstrap_servers(self) -> str:
+        return self._bootstrap_servers or settings.KAFKA_BOOTSTRAP_SERVERS
 
     def register_handler(self, topic: str, handler: EventHandler):
         """Register an async event handler for a specific topic."""

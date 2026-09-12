@@ -22,7 +22,7 @@ def test_event_envelope_validation():
 @pytest.mark.asyncio
 async def test_kafka_producer_and_consumer_dispatch():
     """Test producer sending events and consumer handler registration."""
-    producer = KafkaProducerManager(bootstrap_servers="localhost:9092")
+    producer = KafkaProducerManager()
     consumer = KafkaConsumerManager()
 
     received_events = []

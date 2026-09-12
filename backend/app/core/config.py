@@ -1,5 +1,5 @@
 from typing import List, Union
-from pydantic import Field, field_validator
+from pydantic import Field, AliasChoices, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -27,6 +27,15 @@ class Settings(BaseSettings):
     # Kafka
     KAFKA_BOOTSTRAP_SERVERS: str = Field(
         default="localhost:9092",
+        validation_alias=AliasChoices(
+            "KAFKA_BOOTSTRAP_SERVERS",
+            "KAFKA_BOOTSTRAP_SERVER",
+            "KAFKA_URL",
+            "KAFKA_BROKER_URL",
+            "KAFKA_SERVERS",
+            "kafka_bootstrap_servers",
+            "kafka_bootstrap_server",
+        ),
         description="Kafka Bootstrap Servers"
     )
     KAFKA_CLIENT_ID: str = Field(

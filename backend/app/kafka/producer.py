@@ -17,9 +17,13 @@ class KafkaProducerManager:
     """Producer abstraction for publishing validated EventEnvelopes to Kafka."""
 
     def __init__(self, bootstrap_servers: Optional[str] = None):
-        self.bootstrap_servers = bootstrap_servers or settings.KAFKA_BOOTSTRAP_SERVERS
+        self._bootstrap_servers = bootstrap_servers
         self._producer: Optional[AIOKafkaProducer] = None
         self._mock_published_events: List[EventEnvelope] = []
+
+    @property
+    def bootstrap_servers(self) -> str:
+        return self._bootstrap_servers or settings.KAFKA_BOOTSTRAP_SERVERS
 
     async def start(self) -> bool:
         if not AIOKAFKA_AVAILABLE:
